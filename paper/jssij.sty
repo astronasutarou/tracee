@@ -1,0 +1,93 @@
+%%% style file for Journal of Space Science Information Japan
+%%
+\usepackage{multicol}
+\usepackage[truedimen,showframe]{geometry}
+\usepackage{layout,lipsum}
+
+\newgeometry{%
+  top=1.18in, inner=0.79in, outer=0.79in, bottom=0.75in,
+  headheight=0pt, headsep=0pt,
+  marginparsep=0pt, marginparwidth=0pt}
+
+\usepackage{etoolbox,environ}
+\usepackage{setspace,calc}
+\usepackage{paralist,enumitem}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{5pt plus 3pt minus 1pt}
+% \setlength{\extrarowheight}{3pt}
+\setstretch{1.0}
+
+\usepackage[pdftex]{graphicx,color}
+\usepackage[table,usenames]{xcolor}
+
+\usepackage[T1]{fontenc}
+\usepackage{times,inconsolata,euler}
+\usepackage{amssymb,amsmath,amsfonts,bm}
+
+\usepackage{titling,authblk,titlesec}
+\usepackage[font={footnotesize,sf},margin=0.8cm,format=hang]{caption}
+
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\hypersetup{%
+  colorlinks=true,
+  anchorcolor=black,
+  citecolor=[rgb]{0.3,0.5,0.6},
+  filecolor=gray,
+  linkcolor=[rgb]{0.3,0.5,0.6},
+  menucolor=[rgb]{0.3,0.3,0.3},
+  urlcolor=[rgb]{0.2,0.2,0.6},
+  pdftitle={},
+  pdfsubject={},
+  pdfauthor={Ryou Ohsawa},
+  pdfkeywords={},
+  pdfproducer={Ryou Ohsawa},
+  pdfcreator={\LaTeX with hyperref package},
+  pdfstartpage=1,
+}
+
+\pretitle{%
+  \begin{center}%
+    \fontsize{14}{\baselineskip}\selectfont}
+\posttitle{%
+  \end{center}}
+\preauthor{%
+  \begin{center}%
+    \fontsize{10.5}{\baselineskip}\selectfont}
+\postauthor{%
+  \end{center}}
+
+\makeatletter
+\let\orig@abstract\abstract
+\let\endorig@abstract\endabstract
+\global\@namedef{abstract@content}{\empty}%
+\global\@namedef{abstract@keywords}{\empty}%
+\newcommand{\displayabstract}{%
+  \orig@abstract\abstract@content\endorig@abstract\par%
+  \noindent{\bfseries Keywords:} \abstract@keywords\par%
+  \fontsize{10.5}{\baselineskip}\selectfont}
+\RenewEnviron{abstract}{%
+  \global\let\inside@abstract\BODY%
+  \write\@auxout{%
+    \global\noexpand\@namedef{abstract@content}{{\inside@abstract}}}}
+\newcommand{\keyword}[1]{%
+  \write\@auxout{\global\noexpand\@namedef{abstract@keywords}{#1}}}
+\makeatother
+
+\AtEndPreamble{%
+\makeatletter
+\hypersetup{pdftitle={\@title}}
+\makeatother
+\date{\vspace*{-3em}}
+}
+
+\AtBeginDocument{%
+\maketitle
+\fontsize{10.5}{\baselineskip}\selectfont
+\begin{multicols}{2}[\displayabstract]
+}
+
+\AtEndDocument{%
+\end{multicols}
+}
