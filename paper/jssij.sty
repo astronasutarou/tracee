@@ -1,7 +1,7 @@
 %%% style file for Journal of Space Science Information Japan
 %%
 \usepackage{multicol}
-\usepackage[truedimen,showframe]{geometry}
+\usepackage[truedimen]{geometry}
 \usepackage{layout,lipsum}
 
 \newgeometry{%
@@ -24,7 +24,8 @@
 \usepackage{times,inconsolata,euler}
 \usepackage{amssymb,amsmath,amsfonts,bm}
 
-\usepackage{titling,authblk,titlesec}
+\usepackage{titling,authblk}
+\usepackage[noindentafter,aftersep]{titlesec}
 \usepackage[font={footnotesize,sf},margin=0.8cm,format=hang]{caption}
 
 \usepackage{hyperref}
@@ -39,7 +40,7 @@
   menucolor=[rgb]{0.3,0.3,0.3},
   urlcolor=[rgb]{0.2,0.2,0.6},
   pdftitle={},
-  pdfsubject={},
+  pdfsubject={JSSIJ: Journal of Space Science Information Japan},
   pdfauthor={Ryou Ohsawa},
   pdfkeywords={},
   pdfproducer={Ryou Ohsawa},
@@ -58,9 +59,25 @@
 \postauthor{%
   \end{center}}
 
+\renewcommand{\Affilfont}{%
+  \itshape\fontsize{9pt}{\baselineskip}\selectfont}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\newcommand{\sectionfont}{%
+  \fontsize{12}{\baselineskip}\fontseries{b}\selectfont}
+\newcommand{\subsectionfont}{%
+  \fontsize{10.5}{\baselineskip}\fontseries{b}\selectfont}
+\titleformat{\section}{\sectionfont}{\thesection.}{.5em}{}
+\titleformat{name=\section,numberless}{\sectionfont}{}{0em}{}
+\titleformat{\subsection}{\subsectionfont}{\thesubsection.}{.5em}{}
+\titlespacing{\section}{0pt}{\baselineskip}{0.2\baselineskip}
+\titlespacing{\subsection}{0pt}{\baselineskip}{0.2\baselineskip}
+
+\renewcommand{\refname}{Reference}
+
 \makeatletter
-\let\orig@abstract\abstract
-\let\endorig@abstract\endabstract
+\let\orig@abstract\abstract%
+\let\endorig@abstract\endabstract%
 \global\@namedef{abstract@content}{\empty}%
 \global\@namedef{abstract@keywords}{\empty}%
 \newcommand{\displayabstract}{%
@@ -73,21 +90,21 @@
     \global\noexpand\@namedef{abstract@content}{{\inside@abstract}}}}
 \newcommand{\keyword}[1]{%
   \write\@auxout{\global\noexpand\@namedef{abstract@keywords}{#1}}}
-\makeatother
+\renewcommand{\normalsize}{%
+  \setlength\baselineskip{12.0pt}\fontsize{10.5}{\baselineskip}\selectfont}
 
 \AtEndPreamble{%
-\makeatletter
-\hypersetup{pdftitle={\@title}}
-\makeatother
-\date{\vspace*{-3em}}
-}
+\hypersetup{%
+    pdftitle={\@title}, pdfkeywords={\abstract@keywords}}
+\date{\vspace*{-3em}}}
 
 \AtBeginDocument{%
 \maketitle
-\fontsize{10.5}{\baselineskip}\selectfont
-\begin{multicols}{2}[\displayabstract]
+\hypersetup{%
+    pdftitle={\@title}, pdfkeywords={\abstract@keywords}}
+\begin{multicols}{2}[\normalsize\displayabstract]
 }
 
 \AtEndDocument{%
-\end{multicols}
-}
+\end{multicols}}
+\makeatother

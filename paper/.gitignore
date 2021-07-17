@@ -6,6 +6,7 @@
 *.fdb_latexmk
 *.out
 *.spl
+*.bst
 
 /*.pdf
 manuscript.bib
