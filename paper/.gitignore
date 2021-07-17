@@ -1,0 +1,14 @@
+*.blg
+*.fls
+*.aux
+*.bbl
+*.log
+*.fdb_latexmk
+*.out
+*.spl
+
+/*.pdf
+manuscript.bib
+manuscriptNotes.bib
+
+!manuscript.pdf
