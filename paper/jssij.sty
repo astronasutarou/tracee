@@ -1,6 +1,4 @@
 %%% style file for Journal of Space Science Information Japan
-%%
-\usepackage{multicol}
 \usepackage[truedimen]{geometry}
 \usepackage{layout,lipsum}
 
@@ -14,15 +12,18 @@
 \usepackage{paralist,enumitem}
 \setlength{\parindent}{1em}
 \setlength{\parskip}{5pt plus 3pt minus 1pt}
-% \setlength{\extrarowheight}{3pt}
 \setstretch{1.0}
 
+\usepackage{booktabs}
 \usepackage[pdftex]{graphicx,color}
 \usepackage[table,usenames]{xcolor}
 
+\usepackage{float,listings}
+\usepackage[linesnumbered,ruled,lined]{algorithm2e}
+
 \usepackage[T1]{fontenc}
 \usepackage{times,inconsolata,euler}
-\usepackage{amssymb,amsmath,amsfonts,bm}
+\usepackage{amssymb,amsmath,amsfonts,mathtools,bm}
 
 \usepackage{titling,authblk}
 \usepackage[noindentafter,aftersep]{titlesec}
@@ -100,18 +101,23 @@
 \renewcommand{\normalsize}{%
   \setlength\baselineskip{12.0pt}\fontsize{10.5}{\baselineskip}\selectfont}
 
+\let\orig@maketitle\maketitle
+\renewcommand{\maketitle}{%
+  \if@twocolumn%
+    \twocolumn[%
+      \@twocolumnfalse%
+      \orig@maketitle\displayabstract\vspace*{2.5em}]%
+  \else%
+    \orig@maketitle\displayabstract\vspace*{1.5em}%
+  \fi}
+
 \AtEndPreamble{%
 \hypersetup{%
     pdftitle={\@title}, pdfkeywords={\abstract@keywords}}
 \date{\vspace*{-3em}}}
 
 \AtBeginDocument{%
-\maketitle
-\hypersetup{%
-    pdftitle={\@title}, pdfkeywords={\abstract@keywords}}
-\begin{multicols}{2}[\normalsize\displayabstract]
-}
+  \hypersetup{pdftitle={\@title}, pdfkeywords={\abstract@keywords}}}
+\AtEndDocument{}
 
-\AtEndDocument{%
-\end{multicols}}
 \makeatother
