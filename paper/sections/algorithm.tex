@@ -1,0 +1,63 @@
+%%% algorithm
+
+This study aims to accelerate a process to identify moving object candidates from a sequence of images. Many sophisticated applications are available to extract sources from images \citep[e.g., \texttt{DAOFIND} and \texttt{Source Extractor}; ][]{stetson_daophot_1987,bertin_sextractor:_1996}. The list of the extracted sources may contain fixed stars, cosmic rays, and artificial noises, as well as possible moving objects. It is not an easy task to isolate moving object candidates from such distractors. This process can be a bottleneck in moving object extraction. Thus, we developed a dedicated algorithm, Tracklet Extraction Engine (\texttt{tracee}), which efficiently extracts moving object candidates from a source list. The \texttt{tracee} is originally developed for an asteroid search but is possibly utilized in other fields.
+
+
+\subsection{Problem Setting}
+The tracee receives a source list containing the source positions and the timestamps of extraction. The input data is described as follows.
+\begin{equation}
+  \label{eq:algo:sources}
+  L = \left\{
+    x_i, \, y_i, \, t_i
+  \right\}_{i=1\ldots{N}},
+\end{equation}
+where $x_i$ and $y_i$ are the source positions, $t_i$ is the extraction timestamp, $i$ is the index of the source, and $N$ is the total number of the extracted sources. Then, sets of tracklets that are likely associated with moving objects are generated. Here, the tracklet is defined as a data structure to represent a line segment:
+\begin{equation}
+  \label{eq:algo:tracklet}
+  \begin{aligned}
+    T_m & = \left\{ v_s, v_e, V \right\} \\
+    & \begin{cases}
+      v_s = \left\{ x^s_m,\, y^s_m,\, t^s_m \right\}, \\
+      v_e = \left\{ x^e_m,\, y^e_m,\, t^e_m \right\}, \\
+      V   = \left\{ \theta_1,\, \theta_2,\, \ldots,\, \theta_{M_m} \right\},
+    \end{cases}
+  \end{aligned}
+\end{equation}
+where $m$ is the index of the tracklet, $v_s$ and $v_e$ respectively define the starting and end points of the line segment, $V$ is the set of the extracted sources associated with the $m$th tracklet, $M_m$ is the number of the sources associated with the tracklet, and $\theta_j$ denotes the index of the $j$th source associated with the tracklet.
+
+The algorithm is intended to deal with short video data. Thus, we assume that the motions of moving objects are linear and uniform. Thus, the problem is described as extracting linearly aligned points from a point cloud in a three-dimensional space. A single data set may contain multiple moving objects. The algorithm is required to detect them separately. The moving objects possibly cross fixed stars and each other. The algorithm should work properly in such cases.
+
+\textit{Hough transformation} \citep{hough_method_1962} a plausible algorithm to deal with the problem, where each source votes for points in the hyperspace where each point is associated with a line segment. Such voting-based algorithms are, however, usually memory-consuming, although some efficient implementations are proposed \citep{li_fast_1986}. Thus, we do not adopt Hough transformation. Instead, we split the problem into two parts; First, we construct a $k$-nearest neighbor graph of the sources and then extract linearly aligned edges from the graph.
+
+
+\subsection{Procedures}
+
+
+\subsubsection{$k$-Nearest-Neighbor Graph}
+\lipsum[4]
+
+\begin{algorithm}[tp]
+  \caption{Overview of \texttt{tracee}}
+  \label{algorithm:procedures}
+  \SetAlgoLined
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+  \Input{test}
+  \Output{how to write algorithm with \LaTeX2e}
+  \BlankLine
+  \emph{special treatment of the first line}\;
+  \For{$i=1\ldots{3}$}{
+    \emph{special treatment of the first line}\;
+    \emph{special treatment of the first line}\;
+    \emph{special treatment of the first line}\;
+  }
+\end{algorithm}
+
+\subsubsection{Line Segment Grouping}
+\lipsum[5]
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:
