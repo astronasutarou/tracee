@@ -29,16 +29,17 @@
 \usepackage[font={footnotesize,sf},margin=0.8cm,format=hang]{caption}
 
 \usepackage{hyperref}
-\usepackage[numbers,sort&compress]{natbib}
+\usepackage[compress,authoryear,comma]{natbib}
+\setcitestyle{notesep={; },citesep={,},aysep={}}
 
 \hypersetup{%
   colorlinks=true,
   anchorcolor=black,
-  citecolor=[rgb]{0.3,0.5,0.6},
+  citecolor=[rgb]{0.3,0.3,0.8},
   filecolor=gray,
-  linkcolor=[rgb]{0.3,0.5,0.6},
-  menucolor=[rgb]{0.3,0.3,0.3},
-  urlcolor=[rgb]{0.2,0.2,0.6},
+  linkcolor=[rgb]{0.3,0.3,0.8},
+  menucolor=[rgb]{0.3,0.3,0.8},
+  urlcolor=[rgb]{0.3,0.3,0.8},
   pdftitle={},
   pdfsubject={JSSIJ: Journal of Space Science Information Japan},
   pdfauthor={Ryou Ohsawa},
@@ -74,6 +75,8 @@
 \titlespacing{\subsection}{0pt}{\baselineskip}{0.2\baselineskip}
 
 \renewcommand{\refname}{Reference}
+\renewcommand{\bibfont}{\small}
+\setlength{\bibsep}{0.3ex plus 0.3ex}
 
 \makeatletter
 \let\orig@abstract\abstract%
