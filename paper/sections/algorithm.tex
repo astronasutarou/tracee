@@ -8,15 +8,15 @@ We developed a dedicated algorithm, Tracklet Extraction Engine (\texttt{tracee})
 \subsection{Problem Setting}
 The algorithm we develop, \texttt{tracee},  is intended to deal with short video data. Thus, we assume that the motions of moving objects are linear and uniform. Thus, the problem is described as extracting linearly aligned points from a point cloud in a three-dimensional space. A single data set may contain multiple moving objects. The algorithm is required to detect them separately. The moving objects possibly cross fixed stars and each other. The algorithm should work properly in such cases.
 
-\textit{Hough transformation} \citep{hough_method_1962} a plausible algorithm to deal with the problem, where each source votes for points in the hyperspace where each point is associated with a line segment. Such voting-based algorithms are, however, usually memory-consuming, while some efficient implementations are proposed \citep{li_fast_1986}. Thus, we do not adopt Hough transformation. Instead, we split the problem into two parts; First, we construct a $k$-nearest neighbor graph of the sources and then extract linearly aligned edges from the graph. An overview of the procedures is presented in Algorithm~\ref{algorithm:procedures}. Detailed descriptions are described below.
+\textit{Hough transformation} \citep{hough_method_1962} a plausible algorithm to deal with the problem, where each source votes for points in the hyperspace where each point is associated with a line segment. Such voting-based algorithms are, however, usually memory-consuming, while some efficient implementations are proposed \citep{li_fast_1986}. Thus, we do not adopt Hough transformation. Instead, we split the problem into two parts; First, we construct a $k$-nearest neighbor graph of the sources and then extract linearly aligned edges from the graph. An overview of the procedures is presented in Algorithm~\ref{algorithm:tracee}. Detailed descriptions are described below.
 
 
 \begin{algorithm}[tp]
   \caption{Overview of \texttt{tracee}}
-  \label{algorithm:procedures}
+  \label{algorithm:tracee}
   \DontPrintSemicolon
   \SetKwProg{Part}{}{}{}
-  \Part{\textbf{\upshape Part 1:} $k$-NN Graph}{
+  \Part{\textbf{\upshape Part 1:} $k$-Nearest Neighbor Graph}{
     \Input{$V=\left\{v_i\middle|_{i=1{\ldots}N}\right\}$}
     \Output{$E=\left\{(v_i,v_j)\middle|_{i,j \in \{1{\ldots}N\}}\right\}$}
     {Construct a $k$-NN graph $G(V,\,E)$ from $V$.}\;
@@ -73,9 +73,52 @@ where $K$ is the number of the vertices associated with the baseline and $\theta
 where $m$ is the index of the baseline and $M$ is the total number of the baselines.
 
 \subsubsection{$k$-Nearest-Neighbor Graph}
+In the first part of the algorithm, we construct a $k$-nearest neighbor graph ($k$-NN graph) from the vertices. In the $k$-nearest neighbor graph, every vertex has at least $k$ edges to the $k$th nearest vertices. Samples of the $k$-NN graph are presented in Figure~\ref{fig:algo:knn_sample}. The blue dots represent the vertices. The solid and dashed lines show the $k$-NN graphs for $k=1$ and $3$, respectively.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{./figs/knn_sample.pdf}
+  \caption{A sample of $k$-Nearest Neighbor graph. The blue dots indicate the vertices. The nearest neighbor graph ($k{=}1$) is denoted by the red thick lines. The $3$-nearest neighbor graph is shown by the gray dashed lines.}
+  \label{fig:algo:knn_sample}
+\end{figure}
+
+A brute-force construction of a $k$-NN graph requires a cost of $O(n^{2})$, which is not acceptable for large problems. Dong et al. (2011) presented \texttt{NN-Descent}, an efficient algorithm to obtain an approximate $k$-NN graph, where the construction cost is about $O(n^{1.14})$ and is suitable for parallel computing. An overview of \texttt{NN-Descent} is described in Algorithm~\ref{algorithm:nndescent}. The algorithm receives the vertex set $V$ and the order of the graph $k$. The edge list $E[v]$ handles the edges starting from $v$. The element of $E[v]$ is a pair of the destination $w$ and the distance between $v$ and $w$. At first, $E[v]$ is initialized with arbitrary $k$ vertices with infinity distances. Then, the edge list $E$ is iteratively updated by replacing elements with shorter ones. The algorithm stops when no element is updated.
+
+\begin{algorithm}[t]
+  \caption{\texttt{NN-Descent}}
+  \label{algorithm:nndescent}
+  \SetKwFor{Loop}{loop}{}{}
+  \DontPrintSemicolon
+  \Input{vertex set $V$, order $k$}
+  \Output{$k$-NN edge list $E$}
+  \BlankLine
+  \ForEach(\tcp*[f]{initialize $E$}){$v \in V$}{
+    {$W \gets$ arbitrary $K$ elements from $V$.}\;
+    \lForEach{$w \in W$}{append $\langle w, \infty\rangle$ to $E[v]$.}
+  }
+  \Loop(\tcp*[f]{iteratively update $E$}){}{
+    {$R \gets$ reverse graph of $E$.}\;
+    \lForEach{$v \in V$}{$\overline{E}[v] \gets E[v] \cup R[v]$.}
+    {$c \gets \mathit{False}$}\;
+    \ForEach{$v \in V$}{
+      \ForEach{$u_1 \in \overline{E}[v]$, $u_2 \in \overline{E}[u_1]$}{
+        {$l \gets$ distance between $v$ and $u_2$}\;
+        {$\langle \tilde{v},s \rangle \gets$ largest element of $E[v]$.}\;
+        \If{$l < s$}{
+          {pop $\langle \tilde{v},s \rangle$ from $E[v]$.}\;
+          {append $\langle u_2,l \rangle$ into $E[v]$.}\;
+          {$c \gets \mathit{True}$}\;
+        }
+      }
+    }
+    \lIf{$c = \mathit{False}$}{\KwRet{$E$}}
+  }
+\end{algorithm}
+
+\texttt{NN-Descent} has been widely used, and there are already several implementations. While major implementations are well-established and functionally rich, high performance is required by tracee. Thus, we have developed a minimal package to construct a $k$-NN graph efficiently in a three-dimensional Euclidian space \citep{ohsawa_minimalknn_2020}. The core function of the module is written in \texttt{C++}, and an interface for \texttt{Python} is provided. The package, \texttt{minimalKNN}, is available in the Python Package Index as open-source software.
 
 \subsubsection{Line Segment Grouping}
-\lipsum[5]
+\lipsum[5-10]
 
 
 %%% Local Variables:

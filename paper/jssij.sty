@@ -19,7 +19,7 @@
 \usepackage[table,usenames]{xcolor}
 
 \usepackage{float,listings}
-\usepackage[linesnumbered,ruled,lined]{algorithm2e}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 \SetKwInOut{Input}{input}
 \SetKwInOut{Output}{output}
 
@@ -27,9 +27,10 @@
 \usepackage{times,inconsolata,euler}
 \usepackage{amssymb,amsmath,amsfonts,mathtools,bm}
 
-\usepackage{titling,authblk}
+\usepackage{titling,authblk,caption}
 \usepackage[noindentafter,aftersep]{titlesec}
-\usepackage[font={footnotesize,sf},margin=0.8cm,format=hang]{caption}
+\renewcommand{\figurename}{Fig.}
+\captionsetup{labelfont={bf},font={footnotesize,sf},margin=0.2cm,format=hang}
 
 \usepackage{hyperref}
 \usepackage[compress,authoryear,comma]{natbib}
