@@ -122,7 +122,60 @@ The output of Algorithm~\ref{algorithm:nndescent} is a directed graph. The edges
 
 
 \subsubsection{Line Segment Grouping}
-\lipsum[5-10]
+Linearly aligned edges of the graph are extracted to identify moving object candidates. \citet{jang_fast_2002} tackled the problem of extracting favorable line segments from a gray-scale image. The proposed algorithm is a fast line segment grouping method; First, edges are extracted by an edge detector. Then, the edges are split into short line segments (hereafter, elementary line segments, ELSs). The algorithm they developed extracts a subset of linearly aligned line segments from a set of ELSs. An overview of the algorithm is described in Algorithm~\ref{algorithm:fdlsgm}.
+
+\begin{algorithm}[t]
+  \caption{\texttt{fast ELS grouping}}
+  \label{algorithm:fdlsgm}
+  \SetKwFor{Loop}{loop}{}{}
+  \DontPrintSemicolon
+  \Input{set of ELSs $E$}
+  \Output{set of baselines $B$}
+  \BlankLine
+  {construct an empty \textit{accumulator} $A$.}\;
+  \ForEach(\tcp*[f]{initialization}){$e \in E$}{
+    {$\theta \gets \mathrm{argument}(e)$}\;
+    {$c \gets \mathit{False}$}\;
+    \ForEach{$b \in A[\theta]$}{
+      \If{$e \sim b$} {
+        {append $e$ to the members of $b$}\;
+        {$c \gets \mathrm{True}$}
+      }
+    }
+    \If{$c = \mathit{False}$}{
+      {generate a baseline $b'$ from $e$}\;
+      {append $b'$ to $A[\theta]$.}}
+  }
+  \Loop(\tcp*[f]{optimization}){}{
+    \ForEach{$e \in E$}{
+      {$\theta \gets \mathrm{argument}(e)$}\;
+      {$c \gets \mathit{False}$}\;
+      \ForEach{$b \in A[\theta]$}{
+        \If{$e \sim b$ \& $e \not\in b$}{
+          {append $e$ to the members of $b$}\;
+          {$c \gets \mathrm{True}$}
+        }
+      }
+    }
+  }
+  {construct an empty \textit{baseline set} $\overline{B}$}\;
+  \ForEach(\tcp*[f]{merge baselines}){$b \in B$}{
+    {$\theta \gets \mathrm{argument}(b)$}\;
+    \ForEach{$\tilde{b} \in A[\theta]$}{
+      \If{$b \sim \tilde{b}$}{
+        {$b \gets \mathrm{merge}(b,\tilde{b})$}\;
+        {remove $b$ and $\tilde{b}$ from $B$}\;
+      }
+    }
+    {append $b$ into $\overline{B}$}\;
+  }
+  {$B \gets \overline{B}$}\;
+\end{algorithm}
+
+\textit{Baselines} and an \textit{accumulator} play an essential role in facilitating line segment grouping. The Baselines are line segment candidates obtained by grouping colinear ELSs, while the accumulator is a data structure to search baselines by the position angle. First, each ELS is compared with baselines in the accumulator. Then, if the ELS and the baseline fulfill the similarity criterion, the baseline is updated by embracing the ELS. Otherwise, a new baseline is created from the ELS. The definition of the similarity is illustrated in Figure~\textbf{XXX}. Second, the same procedure is repeated, but no new baseline is created this time. Finally, similar baselines are merged into a single baseline.
+
+The original algorithm in \citet{jang_fast_2002} works on non-directional line segments on the two-dimensional plane. Thus, we have extended the algorithm to directional line segments in the three-dimensional space. The extended algorithm is named \textit{Fast Directed Line Segment Grouping Method} (\texttt{}fdlsgm). The developed code is published as open-source software \citep{ohsawa_fdlsgm_2020}. The core function of the module is written in C++, and an interface for Python is implemented.
+
 
 
 %%% Local Variables:
