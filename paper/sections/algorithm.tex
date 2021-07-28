@@ -20,8 +20,9 @@ The algorithm we develop, \texttt{tracee},  is intended to deal with short video
     \Input{$V=\left\{v_i\middle|_{i=1{\ldots}N}\right\}$}
     \Output{$E=\left\{(v_i,v_j)\middle|_{i,j \in \{1{\ldots}N\}}\right\}$}
     {Construct a $k$-NN graph $G(V,\,E)$ from $V$.}\;
-    {Remove inappropriate edges in $E$.}\;
+    {Merge the bidirectional edges in $E$.}\;
     {Redirect the edges in the chronological order.}\;
+    {Remove inappropriate edges in $E$.}\;
     \KwRet{$E$}\;
   }
   \BlankLine
@@ -116,6 +117,9 @@ A brute-force construction of a $k$-NN graph requires a cost of $O(n^{2})$, whic
 \end{algorithm}
 
 \texttt{NN-Descent} has been widely used, and there are already several implementations. While major implementations are well-established and functionally rich, high performance is required by tracee. Thus, we have developed a minimal package to construct a $k$-NN graph efficiently in a three-dimensional Euclidian space \citep{ohsawa_minimalknn_2020}. The core function of the module is written in \texttt{C++}, and an interface for \texttt{Python} is provided. The package, \texttt{minimalKNN}, is available in the Python Package Index as open-source software.
+
+The output of Algorithm~\ref{algorithm:nndescent} is a directed graph. The edges should be in chronological order to trace moving objects. Thus, the bidirectional edges are merged, and the edges are redirected in chronological order. We also remove inappropriate edges whose corresponding velocities are too high. Then, the updated $k$-NN graph is passed to further analysis.
+
 
 \subsubsection{Line Segment Grouping}
 \lipsum[5-10]
