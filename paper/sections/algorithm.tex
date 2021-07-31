@@ -29,9 +29,9 @@ The algorithm we develop, \texttt{tracee},  is intended to deal with short video
   \Part{\textbf{\upshape Part 2:} Line Segment Grouping}{
     \Input{$E=\left\{(v_i,v_j)\middle|_{i,j \in \{1{\ldots}N\}}\right\}$}
     \Output{$B=\left\{b_m\middle|_{m=1{\ldots}M}\right\}$}
-    {Find linearly aligned edges in $E$.}\;
-    {Construct a set of baselines $B$.}\;
-    {Remove inappropriate baselines from $B$.}\;
+    {Construct a set of baselines $B$ from $E$.}\;
+    {Remove short baselines from $B$.}\;
+    {Remove baselines with large scatter from $B$.}
     \KwRet{$B$}\;
   }
 \end{algorithm}
@@ -172,10 +172,18 @@ Linearly aligned edges of the graph are extracted to identify moving object cand
   {$B \gets \overline{B}$}\;
 \end{algorithm}
 
-\textit{Baselines} and an \textit{accumulator} play an essential role in facilitating line segment grouping. The Baselines are line segment candidates obtained by grouping colinear ELSs, while the accumulator is a data structure to search baselines by the position angle. First, each ELS is compared with baselines in the accumulator. Then, if the ELS and the baseline fulfill the similarity criterion, the baseline is updated by embracing the ELS. Otherwise, a new baseline is created from the ELS. The definition of the similarity is illustrated in Figure~\textbf{XXX}. Second, the same procedure is repeated, but no new baseline is created this time. Finally, similar baselines are merged into a single baseline.
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/fdslgm_similarity.pdf}
+  \caption{A schematic view of the line segment grouping criteria. The blue arrow indicates the baseline, while the short black arrows indicate the elemental line segments.}
+  \label{fig:algo:fdlsgm:criteria}
+\end{figure}
+
+\textit{Baselines} and an \textit{accumulator} play an essential role in facilitating line segment grouping. The Baselines are line segment candidates obtained by grouping colinear ELSs, while the accumulator is a data structure to search baselines by the position angle. First, each ELS is compared with baselines in the accumulator. Then, if the ELS and the baseline fulfill the similarity criterion, the baseline is updated by embracing the ELS. Otherwise, a new baseline is created from the ELS. The definition of the similarity is illustrated in Figure~\ref{fig:algo:fdlsgm:criteria}. The \textit{argument} is the angle between the ELS and the baseline, the \textit{lateral distance} is the distance perpendicular to the baseline, and the \textit{gap distance} is the separation between the ELS and the baseline. Second, the same procedure is repeated one more time, but no new baseline is created this time. Finally, similar baselines are merged into a single baseline.
 
 The original algorithm in \citet{jang_fast_2002} works on non-directional line segments on the two-dimensional plane. Thus, we have extended the algorithm to directional line segments in the three-dimensional space. The extended algorithm is named \textit{Fast Directed Line Segment Grouping Method} (\texttt{}fdlsgm). The developed code is published as open-source software \citep{ohsawa_fdlsgm_2020}. The core function of the module is written in C++, and an interface for Python is implemented.
 
+The output of fdlsgm may contain unsuccessful baselines which are stochastically grouped as lines. First, the baselines are removed when the number of associated vertices is small. Then, the scatter of the vertices around the baseline is evaluated, and the baselines with large scatter are removed. The remaining baselines are finally returned as the candidates of tracklets.
 
 
 %%% Local Variables:
