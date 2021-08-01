@@ -6,7 +6,7 @@ import os,sys,re
 
 
 with open('README.md', 'r') as fd:
-  version = '0.1.0'
+  version = '0.0.1'
   author = 'Ryou Ohsawa'
   email = 'ohsawa@ioa.s.u-tokyo.ac.jp'
   description = ''
@@ -31,7 +31,7 @@ dependencies = [
 
 if __name__ == '__main__':
   setup(
-    name='qmoext',
+    name='tracee',
     version=version,
     author=author,
     author_email=email,
