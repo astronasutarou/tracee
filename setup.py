@@ -6,12 +6,17 @@ import os,sys,re
 
 
 with open('README.md', 'r') as fd:
-  version = '0.0.1'
+  version = '0.0.2'
   author = 'Ryou Ohsawa'
   email = 'ohsawa@ioa.s.u-tokyo.ac.jp'
   description = ''
   long_description = fd.read()
   license = 'MIT'
+
+
+with open('requirements.txt','r') as fd:
+  requirements = fd.read().splitlines()
+
 
 classifiers = [
   'Development Status :: 3 - Alpha',
@@ -24,10 +29,6 @@ classifiers = [
   'Topic :: Scientific/Engineering :: Astronomy'
 ]
 
-dependencies = [
-  'minimalKNN>=0.4',
-  'fdlsgm>=0.5.0',
-]
 
 if __name__ == '__main__':
   setup(
@@ -44,4 +45,4 @@ if __name__ == '__main__':
     license=license,
     packages=find_packages(),
     classifiers=classifiers,
-    install_requires=dependencies)
+    install_requires=requirements)
