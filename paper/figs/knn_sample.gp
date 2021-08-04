@@ -2,7 +2,7 @@
 set term pdfcairo size 8.5cm,8.5cm font 'Ubuntu,12'
 set output 'knn_sample.pdf'
 
-FILE = 'minimalknn_seed100.txt'
+FILE = 'data/minimalknn_seed100.txt'
 
 set xr [-1.1:1.1]
 set yr [-1.1:1.1]
