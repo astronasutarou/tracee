@@ -38,6 +38,9 @@ if __name__ == '__main__':
     '-v', '--velocity', type=int, default=5.0,
     help='the velocity of moving objects')
   parser.add_argument(
+    '-s', '--scatter', type=float, default=0.2,
+    help='scatter in the positions')
+  parser.add_argument(
     '--drop', type=float, default=0.0,
     help='drop rate between [0,1]')
   parser.add_argument(
@@ -64,7 +67,9 @@ if __name__ == '__main__':
   t = np.atleast_2d(np.arange(args.n_frame))
 
   x,y = (x0+vx*t).flatten(),(y0+vy*t).flatten()
-  tt = np.tile(t,args.n_object)
+  tt = np.tile(t,args.n_object).flatten()
+  x += np.random.normal(0, args.scatter, size=x.shape)
+  y += np.random.normal(0, args.scatter, size=y.shape)
 
   position = np.vstack((x,y,tt)).T
   ## remove vertices outside of the field of view
@@ -73,6 +78,15 @@ if __name__ == '__main__':
   ## remove random objects
   flag = np.random.uniform(size=position.shape[0])>args.drop
   position = position[flag,:]
+
+  ## add distractors
+  if args.n_distractor>0:
+    dx = np.random.uniform(args.size, size=args.n_distractor)
+    dy = np.random.uniform(args.size, size=args.n_distractor)
+    dt = np.random.uniform(args.n_frame, size=args.n_distractor)
+    dist = np.vstack((dx,dy,dt)).T
+    position = np.concatenate((position,dist))
+
   ## sort position list chronologically
   idx = np.argsort(position[:,2])
   position = position[idx,:]
