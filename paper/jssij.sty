@@ -30,7 +30,7 @@
 \usepackage{titling,authblk,caption}
 \usepackage[noindentafter,aftersep]{titlesec}
 \renewcommand{\figurename}{Fig.}
-\captionsetup{labelfont={bf},font={footnotesize,sf},margin=0.2cm,format=hang}
+\captionsetup{labelfont={bf,sf},font={footnotesize},margin=0.2cm,format=hang}
 
 \usepackage{hyperref}
 \usepackage[compress,authoryear,comma]{natbib}
@@ -103,6 +103,11 @@
   \write\@auxout{\global\noexpand\@namedef{abstract@keywords}{#1}}}
 \renewcommand{\normalsize}{%
   \setlength\baselineskip{12.0pt}\fontsize{10.5}{\baselineskip}\selectfont}
+\let\orig@appendix\appendix%
+\renewcommand{\appendix}{%
+  \orig@appendix%
+  \renewcommand{\thefigure}{A\arabic{figure}}%
+  \setcounter{figure}{0}}
 
 \let\orig@maketitle\maketitle
 \renewcommand{\maketitle}{%
