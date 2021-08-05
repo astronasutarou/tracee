@@ -52,6 +52,9 @@ if __name__ == '__main__':
   parser.add_argument(
     '--margin', type=int, default=64,
     help='margins of the field of view')
+  parser.add_argument(
+    '-q', '--quiet', action='store_true',
+    help='disable plot')
 
   args = parser.parse_args()
   shape = (args.n_object,1)
@@ -97,9 +100,10 @@ if __name__ == '__main__':
   np.savetxt(filename, position, fmt=savefmt,
              header=header.format(**args.__dict__))
 
-  import matplotlib.pyplot as plt
-  fig = plt.figure(figsize=(10,10))
-  ax = fig.add_subplot()
-  ax.scatter(position[:,0],position[:,1],marker='+')
-  fig.tight_layout()
-  plt.show()
+  if args.quiet is False:
+    import matplotlib.pyplot as plt
+    fig = plt.figure(figsize=(10,10))
+    ax = fig.add_subplot()
+    ax.scatter(position[:,0],position[:,1],marker='+')
+    fig.tight_layout()
+    plt.show()
