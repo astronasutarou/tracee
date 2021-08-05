@@ -6,6 +6,8 @@ We developed a dedicated algorithm, Tracklet Extraction Engine (\texttt{tracee})
 
 
 \subsection{Problem Setting}
+\label{sec:algorithm:problem}
+
 The algorithm we develop, \texttt{tracee},  is intended to deal with short video data. Thus, we assume that the motions of moving objects are linear and uniform. Thus, the problem is described as extracting linearly aligned points from a point cloud in a three-dimensional space. A single data set may contain multiple moving objects. The algorithm is required to detect them separately. The moving objects possibly cross fixed stars and each other. The algorithm should work properly in such cases.
 
 \textit{Hough transformation} \citep{hough_method_1962} a plausible algorithm to deal with the problem, where each source votes for points in the hyperspace where each point is associated with a line segment. Such voting-based algorithms are, however, usually memory-consuming, while some efficient implementations are proposed \citep{li_fast_1986}. Thus, we do not adopt Hough transformation. Instead, we split the problem into two parts; First, we construct a $k$-nearest neighbor graph of the sources and then extract linearly aligned edges from the graph. An overview of the procedures is presented in Algorithm~\ref{algorithm:tracee}. Detailed descriptions are described below.
@@ -38,10 +40,14 @@ The algorithm we develop, \texttt{tracee},  is intended to deal with short video
 
 
 \subsection{Procedures}
+\label{sec:algorithm:procedure}
+
 \subsubsection{Input and Output}
+\label{sec:algorithm:procedure:input/output}
+
 The \texttt{tracee} receives a list containing the source positions and the timestamps of extraction. Hereafter, we call an element of the list a \textit{vertex}. The input data set $V$ is described as follows:
 \begin{equation}
-  \label{eq:algo:sources}
+  \label{eq:algo:vertex}
   V = \Bigl\{
     v_i = \left\{ x_i, \, y_i, \, t_i \right\} \Bigm|
     i = 0,\ldots,N
@@ -65,7 +71,7 @@ where $v^s$ and $v^e$ are respectively the starting and end points of the line s
 \end{equation}
 where $K$ is the number of the vertices associated with the baseline and $\theta_i$ denotes the index of the vertex. The algorithm is expected to return a set of baselines, $B$:
 \begin{equation}
-  \label{eq:algo:sources}
+  \label{eq:algo:baseline}
   B = \Bigl\{
     b_m = \left\{ v^\mathrm{s}_m,\, v^\mathrm{e}_m,\, w_m \right\}
     \Bigm| m = 0,\ldots,M
@@ -74,7 +80,9 @@ where $K$ is the number of the vertices associated with the baseline and $\theta
 where $m$ is the index of the baseline and $M$ is the total number of the baselines.
 
 \subsubsection{$k$-Nearest-Neighbor Graph}
-In the first part of the algorithm, we construct a $k$-nearest neighbor graph ($k$-NN graph) from the vertices. In the $k$-nearest neighbor graph, every vertex has at least $k$ edges to the $k$th nearest vertices. Samples of the $k$-NN graph are presented in Figure~\ref{fig:algo:knn_sample}. The blue dots represent the vertices. The solid and dashed lines show the $k$-NN graphs for $k=1$ and $3$, respectively.
+\label{sec:algorithm:procedure:knn}
+
+In the first part of the algorithm, we construct a $k$-nearest neighbor graph ($k$-NN graph) from the vertices. Every vertex of the $k$-NN graph has at least $k$ edges to the $k$th nearest vertices. Samples of the $k$-NN graph are presented in Figure~\ref{fig:algo:knn_sample}. The blue dots represent the vertices. The solid and dashed lines show the $k$-NN graphs for $k=1$ and $3$, respectively.
 
 \begin{figure}[t]
   \centering
@@ -122,6 +130,8 @@ The output of Algorithm~\ref{algorithm:nndescent} is a directed graph. The edges
 
 
 \subsubsection{Line Segment Grouping}
+\label{sec:algorithm:procedure:grouping}
+
 Linearly aligned edges of the graph are extracted to identify moving object candidates. \citet{jang_fast_2002} tackled the problem of extracting favorable line segments from a gray-scale image. The proposed algorithm is a fast line segment grouping method; First, edges are extracted by an edge detector. Then, the edges are split into short line segments (hereafter, elementary line segments, ELSs). The algorithm they developed extracts a subset of linearly aligned line segments from a set of ELSs. An overview of the algorithm is described in Algorithm~\ref{algorithm:fdlsgm}.
 
 \begin{algorithm}[t]
@@ -179,7 +189,7 @@ Linearly aligned edges of the graph are extracted to identify moving object cand
   \label{fig:algo:fdlsgm:criteria}
 \end{figure}
 
-\textit{Baselines} and an \textit{accumulator} play an essential role in facilitating line segment grouping. The Baselines are line segment candidates obtained by grouping colinear ELSs, while the accumulator is a data structure to search baselines by the position angle. First, each ELS is compared with baselines in the accumulator. Then, if the ELS and the baseline fulfill the similarity criterion, the baseline is updated by embracing the ELS. Otherwise, a new baseline is created from the ELS. The definition of the similarity is illustrated in Figure~\ref{fig:algo:fdlsgm:criteria}. The \textit{argument} is the angle between the ELS and the baseline, the \textit{lateral distance} is the distance perpendicular to the baseline, and the \textit{gap distance} is the separation between the ELS and the baseline. Second, the same procedure is repeated one more time, but no new baseline is created this time. Finally, similar baselines are merged into a single baseline.
+\textit{Baselines} and an \textit{accumulator} play an essential role in facilitating line segment grouping. The Baselines are line segment candidates obtained by grouping colinear ELSs, while the accumulator is a data structure to search baselines by the position angle. First, each ELS is compared with baselines in the accumulator. Then, if the ELS and the baseline fulfill the similarity criterion, the baseline is updated by embracing the ELS. Otherwise, a new baseline is created from the ELS. Refer to \citet{jang_fast_2002} for the way to create and update baselines. The definition of the similarity is illustrated in Figure~\ref{fig:algo:fdlsgm:criteria}. The \textit{argument} is the angle between the ELS and the baseline, the \textit{lateral distance} is the distance perpendicular to the baseline, and the \textit{gap distance} is the separation between the ELS and the baseline projected on the baseline. Second, the same procedure is repeated one more time, but no new baseline is created this time. Finally, similar baselines are merged into a single baseline.
 
 The original algorithm in \citet{jang_fast_2002} works on non-directional line segments on the two-dimensional plane. Thus, we have extended the algorithm to directional line segments in the three-dimensional space. The extended algorithm is named \textit{Fast Directed Line Segment Grouping Method} (\texttt{}fdlsgm). The developed code is published as open-source software \citep{ohsawa_fdlsgm_2020}. The core function of the module is written in C++, and an interface for Python is implemented.
 

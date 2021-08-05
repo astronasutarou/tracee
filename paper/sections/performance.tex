@@ -1,0 +1,34 @@
+%%% Performance Verification
+
+The performance of \texttt{tracee} is evaluated using mock data. In Section~\ref{sec:performance:mockdata}, we demonstrate the way that the algorithm works. Tracklets are extracted in several different conditions. The scalability of the algorithm is evaluated in Section~\ref{sec:performance:scalability} with the different numbers of moving objects.
+
+\subsection{Validation with Mock data}
+\label{sec:performance:mockdata}
+
+Mock data are generated as follows; First, $n$ artificial moving objects are generated in a field of $512{\times}512\,\mathrm{pixel}$. The velocities and directions of the moving objects are randomly selected. Next, the positions of the moving objects are measured for continuous 30 frames, while they are disturbed assuming the uncertainty of the position measurement of $\sigma = 0.2\,\mathrm{pixel}$. Then, the measurements are stochastically dropped with a probability of $p$. Finally, $m$ distractors are added to the measurements.
+
+\begin{figure*}
+  \centering
+  \includegraphics[width=.98\linewidth,page=1]{./figs/mockdata.pdf}
+  \includegraphics[width=.98\linewidth,page=2]{./figs/mockdata.pdf}
+  \includegraphics[width=.98\linewidth,page=3]{./figs/mockdata.pdf}
+  \caption{Mock data with different situations. The top panels show the data for $(n,p,m)=(6,0,0)$. Panel (1a) shows the source positions projected on the $XY$-plane, where the symbol colors indicate the frame number. Panel (1b) illustrates the generated elemental line segments (ELSs, the thin black arrows) and the extracted tracklets (the thick blue arrows). The middle and bottom panels illustrate the data generated with $(n,p,m)=(6,0.5,0)$ and $(6,0,500)$, respectively.}
+  \label{fig:performance:mockdata}
+\end{figure*}
+
+Mock data of $n = 6$ are illustrated in Figure~\ref{fig:performance:mockdata}. Panels (1a) and (1b) illustrate the result of Case~1, generated with $(n,p,m)=(6,0,0)$. The source distribution projected on the $XY$-plane is shown in Panel~(1b). The ELSs generated from the sources are illustrated by the thin black arrows in Panel~(1b), while the extracted tracklets are shown by the thick blue arrows. All the six moving objects are successfully identified by \texttt{tracee}.
+
+Panels (2a) and (2b) show the result of Case~2, generated with $(n,p,m) = (6,0.5,0)$. The input moving objects are the same as in the previous case, but about half of the data are randomly removed (see, Panel~(2a)). Although the number of ELSs decreases accordingly, all the tracklets are successfully recovered.
+
+The result of Case~3, generated with $(n,p,m) = (6,0,500)$, is presented in Panels (3a) and (3b). The moving objects are the same as in Case~1, while 500 distracting vertices are randomly appended. The total number of vertices is 680. Thus, a brute force approach will produce 230860 possible line segments. On the other hand, the number of ELSs in Panel~(3b) is 1217. The algorithm reduces the number of segments to just 0.5\% of those in the brute force approach. The thick blue arrows indicate that all the moving objects are successfully identified as well. A 3-dimensional view of Case 3 is presented in Figure~\ref{fig:appendix:case3}.
+
+
+\subsection{Scalability}
+\label{sec:performance:scalability}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:
