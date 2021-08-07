@@ -107,7 +107,9 @@
 \renewcommand{\appendix}{%
   \orig@appendix%
   \renewcommand{\thefigure}{A\arabic{figure}}%
-  \setcounter{figure}{0}}
+  \renewcommand{\thetable}{A\arabic{table}}%
+  \setcounter{figure}{0}%
+  \setcounter{table}{0}}
 
 \let\orig@maketitle\maketitle
 \renewcommand{\maketitle}{%
