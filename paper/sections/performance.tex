@@ -18,17 +18,46 @@ The generated mock data are consistently processed with the same parameters. In 
   \label{fig:performance:mockdata}
 \end{figure*}
 
-Mock data of $n = 6$ are illustrated in Figure~\ref{fig:performance:mockdata}. Panels (1a) and (1b) illustrate the result of Case~1, generated with $(n,p,m)=(6,0,0)$. The source distribution projected on the $XY$-plane is shown in Panel~(1b). The ELSs generated from the sources are illustrated by the thin black arrows in Panel~(1b), while the extracted tracklets are shown by the thick blue arrows. All the six moving objects are successfully identified by \texttt{tracee}.
+\begin{figure*}
+  \centering
+  \includegraphics[width=.48\linewidth,page=1]{./figs/mockdata_3d.pdf}
+  \includegraphics[width=.48\linewidth,page=2]{./figs/mockdata_3d.pdf}
+  \includegraphics[width=.48\linewidth,page=3]{./figs/mockdata_3d.pdf}
+  \caption{A 3-dimensional views of Case 1 (top left), 2 (top right), and 3 (bottom). The source positions are shown by the circle symbols. The thin gray arrows indicates the ELSs. The retrieved tracklets are shown by the thick blue arrows.}
+  \label{fig:performance:3d}
+\end{figure*}
 
-Panels (2a) and (2b) show the result of Case~2, generated with $(n,p,m) = (6,0.5,0)$. The input moving objects are the same as in the previous case, but about half of the data are randomly removed (see, Panel~(2a)). Although the number of ELSs decreases accordingly, all the tracklets are successfully recovered.
+\input{sections/table_elapsed_time}
 
-The result of Case~3, generated with $(n,p,m) = (6,0,500)$, is presented in Panels (3a) and (3b). The moving objects are the same as in Case~1, while 500 distracting vertices are randomly appended. The total number of vertices is 680. Thus, a brute force approach will produce 230860 possible line segments. On the other hand, the number of ELSs in Panel~(3b) is 1217. The algorithm reduces the number of segments to just 0.5\% of those in the brute force approach. The thick blue arrows indicate that all the moving objects are successfully identified as well. A 3-dimensional view of Case 3 is presented in Figure~\ref{fig:appendix:case3}.
+Mock data of $n = 6$ are illustrated in Figure~\ref{fig:performance:mockdata}. Panels (1a) and (1b) illustrate the result of Case~1, generated with $(n,p,m)=(6,0,0)$. The source distribution projected on the $XY$-plane is shown in Panel~(1b). The ELSs generated from the sources are illustrated by the thin black arrows in Panel~(1b), while the extracted tracklets are shown by the thick blue arrows. All the six moving objects are successfully identified by \texttt{tracee}. A 3-dimensional view of Case 1 is presented in Figure~\ref{fig:performance:3d}.
 
+Panels (2a) and (2b) show the result of Case~2, generated with $(n,p,m) = (6,0.5,0)$. The input moving objects are the same as in the previous case, but about half of the data are randomly removed (see, Panel~(2a)). Although the number of ELSs decreases accordingly, all the tracklets are successfully recovered. A 3-dimensional view of Case 2 is presented in Figure~\ref{fig:performance:3d}.
+
+The result of Case~3, generated with $(n,p,m) = (6,0,500)$, is presented in Panels (3a) and (3b). The moving objects are the same as in Case~1, while 500 distracting vertices are randomly appended. The total number of vertices is 680. Thus, a brute force approach will produce 230860 possible line segments. On the other hand, the number of ELSs in Panel~(3b) is 1217. The algorithm reduces the number of segments to just 0.5\% of those in the brute force approach. The thick blue arrows indicate that all the moving objects are successfully identified as well. A 3-dimensional view of Case 3 is presented in Figure~\ref{fig:performance:3d}.
 
 \subsection{Scalability}
 \label{sec:performance:scalability}
 
+The performance of tracee with different numbers of moving objects is investigated. As in Section~\ref{sec:performance:mockdata}, mock data are generated with $n = 5$, $10$, $25$, $50$, $100$, $125$, and $ 150$, while $p$ and $m$ are fixed to 0 and 200, respectively. For each n, five datasets are drawn with different random seeds. All the datasets are processed with the same parameters as in Section~\ref{sec:performance:scalability}. The calculation was conducted on a laptop with Intel Core i7-6600U ($2.60\,\mathrm{GHz}$). The total elapsed time and the elapsed time for creating the k-NN graph are measured using the \texttt{\%timeit} command provided by \texttt{IPython} \citep{perez_ipython_2007}.
 
+The results are summarized in Table~\ref{tab:performance:elapsed}, where $N_\mathrm{obj}$ is the number of moving objects, $\langle N_\mathrm{track} \rangle$ is the mean number of extracted tracklets, $\langle N_\mathrm{ELS} \rangle$ is the mean number of ELSs, $\langle T_\mathrm{ELS} \rangle$ is the mean elapsed time for creating the $k$-NN graph, and $\langle T_\mathrm{total} \rangle$ is the mean total elapsed time. In general, the moving objects are successfully identified in every case. Some objects are missed since they are generated around edges and shortly move outside. The detection rate slightly decreases for larger $N_\mathrm{obj}$, mainly because similar tracklets are wrongly merged. Such tracklets can be distinguished by tuning the threshold parameters, but this is beyond the scope of this paper.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./figs/elapsed_time.pdf}
+  \caption{Dependency of the elapsed time on the number of moving objects. The red circles show the total elapsed times, while the black squares show the elapsed times for creating the $k$-NN graph. The dashed and dot-dashed lines indicate that $t \propto N_\mathrm{ELS}^{1.5}$.}
+  \label{fig:performance:scale}
+\end{figure}
+
+Figure~\ref{fig:performance:scale} shows the elapsed times against the number of the elemental line segments, which is the most appropriate indicator of the problem size. The red circles show the total elapsed times, while the black squares show the elapsed times for generating the $k$-NN graph. Both elapsed times roughly follow $t \propto N_\mathrm{ELS}^{1.5}$, as shown by the dashed and dot-dashed lines. The figures below the symbols denote the numbers of moving objects. Since $N_\mathrm{ELS}$ is almost proportional to $N_\mathrm{obj}$, the elapsed times approximately follow $t \propto N_\mathrm{obj}$. The same holds for the number of distractors. Thus, Figure~\ref{fig:performance:scale} indicates that the elapsed times increase at most with $N^{1.5}$, where $N$ is the representative size of a problem. There is, however, an excess in the total elapsed time around $N_\mathrm{ELS} \sim 8000$. The excess is possibly attributed to the \textit{accumulator}. The performance of the \textit{accumulator} may decrease for such a large $N_\mathrm{ELS}$. More efficient implementation of the \textit{accumulator} will improve the performance of \texttt{tracee} for larger problems
+
+
+\subsection{Application to Real Data}
+\label{sec:performance:application}
+
+Finally, we cite an application of tracee in the Tomo-e Gozen transient survey to attest that the algorithm can deal with actual observational data. Tomo-e Gozen is a wide-field video camera developed in Kiso Observatory, the University of Tokyo, capable of monitoring a sky of 20 square degrees at up to 2\,fps \citep{sako_tomo-e_2018}. Kiso Observatory conducts a transient survey using Tomo-e Gozen. The survey is intended to detect short transient objects in the entire observable sky. Tomo-e Gozen obtains 6- or 9-second video data in every pointing with changing observation fields to sweep the entire sky.
+
+We have developed a data reduction pipeline to extract moving objects in the video data obtained by Tomo-e Gozen. The \texttt{tracee}'s parameters are tuned to detect near-earth objects with apparent speeds of $v \sim 1''\mathrm{s^{-1}}$. The obtained data are automatically processed by dedicated computers installed on Kiso Observatory within a night. The reduction pipeline successfully detects thousands of moving objects a night, including asteroids, artificial satellites, and space debris. From March 2019 to May 2021,  28 near-earth asteroids have been discovered in the survey, showing the applicability of \texttt{tracee} for actual observational data. Detailed analysis of the pipeline performance will be presented in a forthcoming paper (Ohsawa et al., \textit{in prep}).
 
 %%% Local Variables:
 %%% mode: latex
