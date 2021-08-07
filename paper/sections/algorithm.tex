@@ -79,7 +79,7 @@ where $K$ is the number of the vertices associated with the baseline and $\theta
 \end{equation}
 where $m$ is the index of the baseline and $M$ is the total number of the baselines.
 
-\subsubsection{$k$-Nearest-Neighbor Graph}
+\subsubsection{$k$-Nearest Neighbor Graph}
 \label{sec:algorithm:procedure:knn}
 
 In the first part of the algorithm, we construct a $k$-nearest neighbor graph ($k$-NN graph) from the vertices. Every vertex of the $k$-NN graph has at least $k$ edges to the $k$th nearest vertices. Samples of the $k$-NN graph are presented in Figure~\ref{fig:algo:knn_sample}. The blue dots represent the vertices. The solid and dashed lines show the $k$-NN graphs for $k=1$ and $3$, respectively.
@@ -87,7 +87,7 @@ In the first part of the algorithm, we construct a $k$-nearest neighbor graph ($
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{./figs/knn_sample.pdf}
-  \caption{A sample of $k$-Nearest Neighbor graph. The blue dots indicate the vertices. The nearest neighbor graph ($k{=}1$) is denoted by the red thick lines. The $3$-nearest neighbor graph is shown by the gray dashed lines.}
+  \caption{A sample of $k$-nearest neighbor graph. The blue dots indicate the vertices. The nearest neighbor graph ($k{=}1$) is denoted by the red thick lines. The $3$-nearest neighbor graph is shown by the gray dashed lines.}
   \label{fig:algo:knn_sample}
 \end{figure}
 
