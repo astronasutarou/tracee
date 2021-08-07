@@ -7,6 +7,8 @@ The performance of \texttt{tracee} is evaluated using mock data. In Section~\ref
 
 Mock data are generated as follows; First, $n$ artificial moving objects are generated in a field of $512{\times}512\,\mathrm{pixel}$. The velocities and directions of the moving objects are randomly selected. Next, the positions of the moving objects are measured for continuous 30 frames, while they are disturbed assuming the uncertainty of the position measurement of $\sigma = 0.2\,\mathrm{pixel}$. Then, the measurements are stochastically dropped with a probability of $p$. Finally, $m$ distractors are added to the measurements.
 
+The generated mock data are consistently processed with the same parameters. In constructing the $k$-NN graph, the number of neighbors $k$ is set to 10, but only the three shortest edges are adopted. Then, the edges faster than $200\,\mathrm{pixel/frame}$ are removed. In the line segment grouping, the argument threshold is set to $3^\circ$. The lateral distance threshold is set to $1\,\mathrm{pixel}$. The gaps between baselines are accepted up to three times the baseline lengths. Extracted tracklets are removed when they have less than 10 sources.
+
 \begin{figure*}
   \centering
   \includegraphics[width=.98\linewidth,page=1]{./figs/mockdata.pdf}
