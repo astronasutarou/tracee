@@ -1,0 +1,43 @@
+%%% elapsed time table
+
+\begin{table*}
+  \centering
+  \caption{Summary of Scalability Test}
+  \label{tab:performance:elapsed}
+  \begin{tabular}{ccr@{$\pm$}lr@{$\pm$}lr@{$\pm$}l}
+    \toprule
+    $N_\mathrm{obj}$
+    & \multicolumn{1}{c}{$\langle N_\mathrm{track} \rangle$}
+    & \multicolumn{2}{c}{$\langle N_\mathrm{ELS} \rangle$}
+    & \multicolumn{2}{c}{$\langle T_\mathrm{ELS} \rangle$}
+    & \multicolumn{2}{c}{$\langle T_\mathrm{total} \rangle$} \\
+    \midrule
+    $5$   & $5$     & $617$  & $17$
+    & $16.6$ & $0.7\,\mathrm{ms}$
+    & $32.1$ & $2.2\,\mathrm{ms}$ \\
+    $10$  & $10$    & $878$  & $40$
+    & $26.7$ & $2.4\,\mathrm{ms}$
+    & $60.3$ & $6.6\,\mathrm{ms}$ \\
+    $25$  & $24.8$  & $1577$ & $37$
+    & $59.7$ & $2.9\,\mathrm{ms}$
+    & $134$  & $5.2\,\mathrm{ms}$ \\
+    $50$  & $49$    & $2830$ & $121$
+    & $145$  & $7.7\,\mathrm{ms}$
+    & $356$  & $31\,\mathrm{ms}$ \\
+    $100$ & $98.2$  & $5272$ & $78$
+    & $391$  & $27\,\mathrm{ms}$
+    & $1.05$ & $0.05\,\mathrm{s}$ \\
+    $125$ & $117.6$ & $6505$ & $167$
+    & $539$  & $28\,\mathrm{ms}$
+    & $1.56$ & $0.09\,\mathrm{s}$ \\
+    $150$ & $136.6$ & $7611$ & $53$
+    & $755$  & $25\,\mathrm{ms}$
+    & $2.13$ & $0.10\,\mathrm{s}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "performance"
+%%% End:
