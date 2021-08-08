@@ -12,4 +12,6 @@
 manuscript.bib
 manuscriptNotes.bib
 
+*.tar.gz
+
 !manuscript.pdf
