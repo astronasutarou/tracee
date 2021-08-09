@@ -25,8 +25,8 @@ if __name__ == '__main__':
   param.limit = args.limit
   tracklet = tracee.extract(data, n_neighbor=args.k, param=param)
 
-  v0 = np.array([t.s for t in tracklet])
-  v1 = np.array([t.e for t in tracklet])
+  v0 = np.array([t.tail for t in tracklet])
+  v1 = np.array([t.head for t in tracklet])
   segment = np.hstack((v0,v1))
 
   print(segment)

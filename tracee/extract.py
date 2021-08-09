@@ -12,11 +12,11 @@ class Tracklet(object):
   ''' Tracklet Container
 
   Atrributes:
-    s (ndarray):
+    tail (ndarray):
         The starting point of the tracklet. The argument should be compatible
         with an numpy.ndarray, whose number of elements should be three.
         The array content is expectd to be (x,y,t).
-    e (ndarray):
+    head (ndarray):
         The terminal point of the tracklet. The argument should be compatible
         with an numpy.ndarray, whose number of elements should be three.
         The array content is expectd to be (x,y,t).
@@ -26,21 +26,21 @@ class Tracklet(object):
         array should be (N,3), where N is the number of the members. Each
         element should have the (t,y,x)-coordinate of a vertex.
   '''
-  s: np.ndarray
-  e: np.ndarray
+  tail: np.ndarray
+  head: np.ndarray
   members: np.ndarray
 
   def __post_init__(self):
     ''' Validation of the argument is applied here. '''
     try:
-      self.s = np.array(self.s)
-      assert self.s.shape == (3,)
+      self.tail = np.array(self.tail)
+      assert self.tail.shape == (3,)
     except Exception as e:
       raise AssertionError(
         'the starting point should have three elements.') from e
     try:
-      self.e = np.array(self.e)
-      assert self.e.shape == (3,)
+      self.head = np.array(self.head)
+      assert self.head.shape == (3,)
     except Exception as e:
       raise AssertionError(
         'the terminal point should have three elements.') from e
