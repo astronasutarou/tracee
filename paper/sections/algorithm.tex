@@ -1,8 +1,11 @@
 %%% algorithm
 
+\section{Algorithm}
+\label{sec:algorithm}
+
 This study aims to accelerate a process to identify moving object candidates from a sequence of images. Many sophisticated applications are available to extract sources from images \citep[e.g., \texttt{DAOFIND} and \texttt{Source Extractor}; ][]{stetson_daophot_1987,bertin_sextractor:_1996}. The list of the extracted sources may contain fixed stars, cosmic rays, and artificial noises, as well as possible moving objects. It is not an easy task to isolate moving object candidates from such distractors. This process can be a bottleneck in moving object extraction.
 
-We developed a dedicated algorithm, Tracklet Extraction Engine (\texttt{tracee}), which efficiently extracts moving object candidates from a source list. The \texttt{tracee} is originally developed for an asteroid search but is possibly utilized in other fields.
+We developed a dedicated algorithm, Tracklet Extraction Engine (\texttt{tracee}), which efficiently extracts moving object candidates from a source list. The \texttt{tracee} is originally developed for an asteroid search but is possibly utilized in other fields. Table~\ref{tab:appendix:tutorial} describes a basic usage of \texttt{tracee}.
 
 
 \subsection{Problem Setting}
