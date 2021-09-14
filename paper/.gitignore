@@ -8,6 +8,8 @@
 *.spl
 *.bst
 
+submit
+
 /*.pdf
 manuscript.bib
 manuscriptNotes.bib
