@@ -6,7 +6,6 @@
 *.fdb_latexmk
 *.out
 *.spl
-*.bst
 
 submit
 
