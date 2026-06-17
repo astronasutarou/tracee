@@ -1,5 +1,7 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CodeQL](https://github.com/astronasutarou/tracee/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/astronasutarou/tracee/actions/workflows/github-code-scanning/codeql)
+
 # Tracklet Extraction Engine
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This package provides a function to retrieve _tracklets_ from a list of _vertices_ in a three-dimensional space. The function find a set of linearly aligned vertices in the list and derive a line segment (tracklet) to approximate the vertex distribution.
 
