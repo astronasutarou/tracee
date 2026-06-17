@@ -1,5 +1,6 @@
-MANIFEST
-build/
-dist/
-*.egg-info/
+/build
+/site
+/*.egg-info
+
+*.pyc
 __pycache__
